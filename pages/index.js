@@ -1,11 +1,187 @@
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-import styles from '@/styles/Home.module.css'
+import axios from 'axios';
+import io from "socket.io-client";
+import { useSession } from 'next-auth/react';
+import { v4 as uuidv4 } from 'uuid';
 
-const inter = Inter({ subsets: ['latin'] })
+import { 
+  ChatContainer, ConversationHeader, 
+  TypingIndicator, Message,
+  MessageInput, MessageList
+} from '@chatscope/chat-ui-kit-react'
+
+import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
+
+const socket = io({
+  path: '/api/socket'
+});
 
 export default function Home() {
+
+    const [loading, setLoading] = useState(null);
+    const [value, setValue ] = useState(""); 
+    const [typing, setTyping] = useState(false);
+    const [chatState, setChatState] = useState([]);
+
+    const conservationId = uuidv4();
+
+    const [conservation, setConservation] = useState(null); 
+
+    const session = useSession();
+  
+    async function HandleNewMessage() {
+        const app_name = 'demo';
+        const sender = "user_" + app_name;
+        const recipient = "bot_" + app_name;
+
+        setChatState([]);
+        setTyping(true);
+
+        setTimeout(() => {
+            setChatState((chatState) => [...chatState, {
+                message: "Xin chào, để thử nghiệm thực tế cuộc trò chuyện, vui lòng nhắn nội dung câu hỏi liên quan đến cuộc trò chuyện này",
+                sender: 'Bot ai',
+                direction: "incoming",
+                position: "last",
+                type: "text"
+            }]);
+            setTyping(false);           
+        }, 300);
+    }
+
+    async function HandleSendMessage (message) {
+
+      let data = conservation !== null ? { 
+        ...conservation,
+        message: message,
+      } : {
+        message: message,
+      }
+
+      const config = {
+        url: '/api/kanbot/response',
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${session.data.token}`
+        },
+        data: data
+      }
+
+      setTyping(true);   
+      const response = await axios(config).then((res) => res.data).catch((err) => {
+        return null;
+      })
+      
+      if(response){
+
+        setConservation({
+          conversationId: response.conversationId,
+          parentMessageId: response.parentMessageId 
+        })
+
+        setChatState((chatState) => [...chatState, {
+            message: response.message,
+            sender: 'Bot ai',
+            direction: "incoming",
+            position: "last",
+            type: "text"
+        }]);
+      }
+
+      setTyping(false);
+    }
+
+  async function HandleAddMessage(message) {
+      setValue(false);
+
+      setChatState((chatState) => [...chatState, {
+          message: message,
+          sender: "user",
+          direction: "outgoing",
+          position: "last",
+          type: "text"
+      }]);
+
+      await HandleSendMessage(message);
+  }
+
+  useEffect(() => {
+    HandleNewMessage();
+  }, [])
+
+
+  const [input, setInput] = useState('');
+
+  const [isConnected, setIsConnected] = useState(false);
+
+  useEffect(() => {
+      socket.on('connect', () => {
+        console.log("SOCKET CONNECTED!", socket.id);
+        setIsConnected(true);
+      });
+    
+      socket.on('disconnect', () => {
+        setIsConnected(false);
+      });
+
+      socket.on('update-input', msg => {
+        setInput(msg)
+      });
+
+      return () => {
+        socket.disconnect();
+      };
+  
+  }, [])
+
+  // useEffect(() => {
+  //   socketInitializer();
+  // }, [])
+
+  // const socket = io({
+  //   path: '/api/socket'
+  // });
+
+  // const socketInitializer = async () => {
+  //   await fetch('/api/socket');
+
+  //   socket.on('connect', () => {
+  //     console.log('connected')
+  //   })
+
+  //   socket.on('update-input', msg => {
+  //     setInput(msg)
+  //   })
+
+  // }
+
+  // const onChangeHandler = (e) => {
+  //   setInput(e.target.value);
+  //   socket.emit('input-change', e.target.value);
+  // }
+
+  // const [input, setInput] = useState('');
+  // const [isConnected, setIsConnected] = useState(socket.connected);
+
+  // useEffect(() => {
+  //   socket.on('connect', () => {
+  //     console.log('connected')
+  //   });
+  //   socket.on('message', msg => {
+  //     console.log('msg', msg);
+  //     setInput(msg)
+  //   });
+  //   if (socket) return () => socket.disconnect();
+  // }, []);
+
+  // const onChangeHandler = async (e) => {
+  //   const response = await axios.post('/api/message', {
+  //     message: e
+  //   }).then((res => res.data)).catch((err) => console.log(err));
+  // }
+
+
   return (
     <>
       <Head>
@@ -14,110 +190,57 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
-        <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>pages/index.js</code>
-          </p>
-          <div>
-            <a
-              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              By{' '}
-              <Image
-                src="/vercel.svg"
-                alt="Vercel Logo"
-                className={styles.vercelLogo}
-                width={100}
-                height={24}
-                priority
-              />
-            </a>
-          </div>
-        </div>
 
-        <div className={styles.center}>
-          <Image
-            className={styles.logo}
-            src="/next.svg"
-            alt="Next.js Logo"
-            width={180}
-            height={37}
-            priority
-          />
-          <div className={styles.thirteen}>
-            <Image
-              src="/thirteen.svg"
-              alt="13"
-              width={40}
-              height={31}
-              priority
-            />
-          </div>
-        </div>
 
-        <div className={styles.grid}>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Docs <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Find in-depth information about Next.js features and&nbsp;API.
-            </p>
-          </a>
-
-          <a
-            href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Learn <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Learn about Next.js in an interactive course with&nbsp;quizzes!
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Templates <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Discover and deploy boilerplate example Next.js&nbsp;projects.
-            </p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <h2 className={inter.className}>
-              Deploy <span>-&gt;</span>
-            </h2>
-            <p className={inter.className}>
-              Instantly deploy your Next.js site to a shareable URL
-              with&nbsp;Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
+      <main style={{
+            height: "100%"
+            }}>
+                <ChatContainer>
+                      <ConversationHeader>
+                          <ConversationHeader.Content userName={'chatbot'} info="Đang hoạt động" />   
+                          <ConversationHeader.Actions>
+                          </ConversationHeader.Actions>          
+                      </ConversationHeader> 
+                      <MessageList typingIndicator={ typing ? <TypingIndicator content={`Bot ai đang nhập`} /> : false}>
+                              {
+                                  Array.isArray(chatState) 
+                                  && chatState.length 
+                                  ? chatState.map((val, index) => {
+                                      return(
+                                          <Message key={index} model={val} />
+                                      )
+                                  }) : ""
+                              }
+                      </MessageList>
+                      <MessageInput 
+                          onSend={HandleAddMessage}  
+                          placeholder="Nhập nội dung của bạn" 
+                          sendButton={true} 
+                          attachButton={false} 
+                          onChange={(val) => setValue(val)} 
+                          value={value}
+                          onPaste={(evt) => {
+                              evt.preventDefault();
+                              setValue(evt.clipboardData.getData("text"));
+                          }}
+                      />
+                  </ChatContainer>
+                  
+            </main>
     </>
   )
 }
+
+// export async function getServerSideProps(context) {
+
+//   // const api = new ChatGPTAPI({
+//   //   apiKey: process.env.NEXT_PUBLIC_OPEN_API_KEY
+//   // })
+//   // const res = await api.sendMessage('Hello World!');
+
+//   // console.log(res.text)
+
+//   return {
+//     props: {}, // will be passed to the page component as props
+//   }
+// }

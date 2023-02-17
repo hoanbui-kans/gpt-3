@@ -1,0 +1,734 @@
+.x_app_container{
+    max-width: 1050px;
+    margin: auto;
+}
+.x_app_header{
+    border-top: 1px solid whitesmoke;
+    border-bottom: 1px solid whitesmoke;
+    background: #398af3;
+}
+.x_app_section{
+    padding: 35px 0px;
+    background: #ebebeb
+}
+.x_app_nav{
+    background: #398af3
+}
+.x_app_nav > div > span > a, .x_app_nav > div > div >a{
+    color: white;
+}
+.x_app_nav > div > span > a:hover, .x_app_nav > div > div >a:hover{
+    color: rgb(0, 0, 0);
+}
+.x_brand {
+    color: #ffffff;
+    font-weight: 700;
+}
+.x_form_search_container{
+    position: relative;
+    margin-bottom: 15px;
+    width: 100%;
+}
+.x_search_page_input{
+    width: 100%;
+}
+.x_account_button{
+    width: 100%;
+    display: block;
+    margin-bottom: 15px;
+}
+.x_date_button{
+    font-size: 12px;
+}
+.x_update_button{
+    background-color: #2d88e2;
+    color: white;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+}
+.x_change_password_button{
+    background: #2d88e2;
+    color: white;
+}
+.x_badge{
+    font-size: 12px;
+    padding: 5px;
+    background-color: whitesmoke;
+    border-radius: 5px;
+}
+.x_account_button button, 
+.x_create_order_button_disabled,
+.x_create_order_button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    width: 100%;
+}
+.x_create_order_button{
+    background: var(--x-primary-color);
+    color: white;
+}
+.x_create_order_button_disabled{
+    background: #64b0fd !important;
+    color: white !important;
+    pointer-events: none;
+}
+.x_outline_view{
+    border: 1px solid rgb(153, 153, 153);
+    color: rgb(78, 78, 78);
+    margin-right: 2%
+}
+.x_outline_create{
+      background-color: #2d88e2;
+      color: white;  
+}
+
+.x_search_page_input input{
+    width: 100% !important;
+    padding: .75rem .75rem .75rem 3.25rem;
+}
+.x_create_section{
+    margin-bottom: 25px
+}
+.x_search_page_button{
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    z-index: 2;
+    background: unset;
+    color: rgb(54, 54, 54);
+}
+.x_search_page_button:hover{
+    background-color: unset;
+}
+.x_blog{
+    background: #ffffff;
+    box-shadow: 0px 2px 4px rgb(0 0 0 / 10%);
+    border-radius: 10px;
+    margin-bottom: 1.95rem;
+    position: relative;
+    padding: 20px;
+}
+.x_return_to_dashboard{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    column-gap: 10px;
+    margin: auto;
+    background: var(--x-primary-color);
+    color: white;
+    margin-top: 20px;
+    padding: 12px 15px;
+}
+.x_order_message{
+    text-align: center;
+}
+.x_order_header h3{
+    text-align: center;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: var(--x-danger-color);
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 15px;
+}
+.x_qr_pay_section{
+    padding: 55px 0px;
+    position: relative;
+}
+.x_payment_infor{
+    max-width: 500px;
+    margin: auto;
+}
+.x_list{
+    font-weight: bold;
+    background-color: unset !important;
+}
+.x_payment_infor h1{
+    font-size: 24px;
+    text-transform: capitalize;
+}
+.x_upgrade_button{
+    background: var(--x-success-color);
+    display: inline-flex;
+    column-gap: 6px;
+    align-items: center;
+    color: white;
+    width: 48%;
+    justify-content: center;
+}
+.x_extend_button{
+    background: var(--x-primary-color);
+    display: inline-flex;
+    column-gap: 6px;
+    align-items: center;
+    color: white;
+    width: 48%;
+    justify-content: center;
+}
+.x_annoucement{
+    font-size: 14px;
+}
+.x_blog_favicon{
+    border-radius: 50%;
+    overflow: hidden;
+    display: block;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #eaeaea
+}
+.x_flex_blog_image{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    align-items: center;
+    margin-bottom: 25px;
+}
+.x_flex_qouta{
+    display: flex;
+    flex-wrap: wrap;
+}
+.x_flex_qouta_content{
+    display: block;
+    width: 33%;
+    padding: 0rem .25rem;
+}
+.x_flex_qouta_content > div{
+    text-align: center;
+    background: whitesmoke;
+    min-height: 50px;
+    padding-top: .45rem;
+    border-radius: 5px;
+}
+.x_blog_meta{
+    padding-top: 15px;
+    column-gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+}
+.x_blog_meta > div{
+    padding: 2px 5px;
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    text-align: center;
+    width: calc(50% - 10px);
+}
+.x_blog_meta_title{
+    font-size: 12px;
+}
+.x_date_badge{
+    font-size: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 5px 0px;
+    color: rgb(90, 90, 90);
+}
+.x_blog_chart{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: whitesmoke;
+    height: 100%;
+    border-radius: 0.35rem;
+    padding: 0.75rem 0rem;
+}
+.x_flex_qouta_content span{
+    font-size: 10px;
+    width: 100%;
+    display: block;
+}
+.x_flex_qouta_content strong{
+    font-size: 12px;
+    display: block;
+}
+.x_blog_flex_content{
+    width: calc(100% - 50px);
+}
+.x_blog_flex_content h3{
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.15rem;
+    margin-bottom: .35rem;
+    color: #333;
+}
+.x_blog_flex_content p{
+    font-size: 0.75rem;
+    line-height: .75rem;
+    margin-bottom: 0.35rem;
+    margin-top: 0;
+}
+.x_blog_link{
+    height: 32px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    z-index: 2;
+    border: 2px solid #eaeaea;
+    border-radius: 5px;
+    padding: 0px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: black;
+}
+.x_blog_single_link{
+    top: 15px;
+    right: 15px;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+}
+.x_blog_single_link_button{
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    background: var(--x-primary-color);
+    color: white;
+}
+/* Trang Đăng nhập */
+.x_account_container{
+    background: #f2f2f2;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 75px 0px;
+}
+.x_account_background_sections{
+    background: #f2f2f2;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 75px 0px;
+}
+.x_neumorphic{
+    position: fixed;
+    z-index: 1;
+    width: 500px;
+    bottom: 0;
+    right: 0;
+    filter: blur(5px);
+}
+.x_container{
+    position: relative;
+    z-index: 2;
+}
+
+.x_user_fill_info{
+    max-width: 660px !important;
+}
+
+.x_privacy_description{
+    font-size: 12px;
+    line-height: 14px;
+    color: #636363;
+}
+
+.x_account_title{
+    font-size: 28px;
+    text-align: center;
+}
+
+.x_account_update_title{
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 24px;
+    text-align: center;
+    margin-top: 22px;
+    margin-bottom: 32px;
+}
+
+.x_login{
+    padding: 35px;
+    display: block;
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+    margin: auto;
+    background-color: white;
+    border-bottom: 2px solid #d5d5d5;
+}
+.x_login_form{
+    margin: 35px auto;
+}
+.x_login_form input{
+    padding: 15px 15px;
+    margin-top: 5px;
+    border-radius: 35px;
+}
+.x_logged_form{
+    display: block;
+    text-align: center;
+}
+.x_logged_form small{
+    margin-top: -10px;
+    margin-bottom: 15px;
+    display: block;
+}
+.x_margin_bottom{
+    margin-bottom: 35px;
+}
+.x_greeting{
+    font-size: 16px;
+    margin-bottom: 25px;
+}
+.x_account_container{
+    width: 100% !important;
+}
+.x_social_title{
+    margin-bottom: 15px;
+    text-align: center;
+}
+.x_login_button{
+    padding: 15px;
+    width: 100%;
+    border-radius: 35px;
+    background: black;
+    color: white;
+    position: relative;
+}
+.x_loading_icon{
+    position: absolute;
+    left: 15px;
+    top: 15px;
+}
+.x_password_input_group{
+    position: relative;
+}
+.x_password_input_group button{
+    background-color: unset;
+    position: absolute;
+    z-index: 2;
+    right: 10px;
+    top: 14px;;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    padding: 0px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.x_toggle_button{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center
+}
+.x_toggle_button span{
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.x_account_navigate{
+    margin: 15px 0px;
+    padding-left: 10px;
+    color: var(--x-secondary-color);
+    display: block;
+    width: 100%;
+}
+.x_document_count{
+    display: inline-block;
+    border: 1px solid #d6d6d6;
+    background-color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    line-height: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.x_account_nav{
+    border-radius: 8px;
+}
+.x_account_nav > span, .x_account_nav a{
+    border-radius: 12px !important;
+}
+.x_back_home{
+    top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 10px;
+    z-index: 20;
+    color: black;
+    border-bottom: 1px solid var(--x-light-color);
+    padding-bottom: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-size: 12px;
+}
+ .x_date_badge{
+    color: rgb(41, 41, 41);
+    display: inline-block;
+}
+
+.x_guild_list_posts{
+    list-style: none;
+    padding-left: 15px;
+}
+.x_guild_list_posts a, 
+.x_guild_post_title{
+    color: var(--x-text-color);
+    padding: 10px;
+    border-radius: 5px;
+    background: whitesmoke;
+    margin-bottom: 12px;
+    display: block;
+}
+.x_breadcumb{
+    font-size: 16px;
+    font-weight: bold;
+}
+.x_guild_post_title svg{
+    margin-right: 10px;
+}
+.x_guild_post_title{
+    color: var(--x-text-color);
+    padding-left: 12px;
+}
+.x_edit_profile_section{
+    padding: 35px 0px;
+    background: var(--x-light-color)
+}
+.x_form_group{
+    margin-bottom: 15px;
+}
+.x_guild_title{
+    color: var(--x-primary-color);
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+    padding-left: 0px;
+    padding-bottom: 5px;
+}
+.x_social_login{
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 10px;
+    justify-content: center;
+}
+.x_facebook_login{
+    padding: .75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    background-color: #398af3;
+    color: white;
+}
+
+.x_google_login{
+    padding: .75rem 1.25rem;
+    display: flex;
+    align-items: center;
+    column-gap: 10px;
+    background-color: #f05143;
+    color: white;
+}
+
+.x_guilde_content{
+    padding: 15px;
+}
+
+.x_guilde_content h2{
+    font-size: 24px;
+    line-height: 38px;
+    margin-bottom: 10px;
+  }
+  .x_guilde_content h3{
+    font-size: 20px;
+    line-height: 34px;
+  }
+  .x_guilde_content p{
+    font-size: 16px;
+    line-height: 22px;
+    margin-bottom: 7px;
+  }
+  .x_guilde_content img{
+    margin: 15px 0px;
+    height: auto;
+  }
+  .x_guilde_content *{
+    max-width: 100%;
+  }
+  .x_button_add_domain{
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    background: var(--x-primary-color)
+  }
+  .x_rm_domain{
+    display: flex;
+    align-items: center;
+    margin: auto;
+    column-gap: 8px;
+    color: white;
+    font-weight: bold;
+    background: #ff6a6a
+  }
+.x_domain_section{
+    margin-bottom: 35px;
+    background-color: white;
+    padding: 22px;
+    border: 1px solid #e9e9e9;
+    border-radius: 8px;
+}
+  .x_packaged{
+    font-size: 14px;
+    padding: 15px;
+    margin-bottom: 25px;
+    background-color: whitesmoke;
+    border-radius: 15px;
+  }
+
+  .x_change_domain{
+    padding: 15px 0px
+  }
+
+  .x_blog_meta_single{
+    padding: 15px 0px;
+    margin-bottom: 15px;
+    display: block;
+    font-size: 14px;
+  }
+  .x_blog_single_chart{
+    background: whitesmoke;
+    padding: 35px 0px;
+    border-radius: 15px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  .x_single_site_heading{
+    font-size: 22px;
+    border-bottom: 1px solid var(--x-border-color);
+    padding-bottom: 5px;
+    margin-bottom: 25px;
+  }
+.x_change_domain_button{
+    background-color: var(--x-primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    padding: 12px 20px;
+}
+.x_upgrade_single_button,
+.x_extend_single_button{
+    padding: 15px 0px;
+    margin-bottom: 8px;
+}
+.x_board_domain_change{
+    padding: 5px 10px 12px 10px;
+    background: whitesmoke;
+    margin-bottom: 14px;
+    margin-top: 11px;
+}
+.x_current_domain{
+    padding: 9px 20px;
+    background: white;
+    border-radius: 5px;
+    border: 1px solid rgb(229 229 234);
+}
+.x_domain_change_arrow{
+    padding: 0px 15px;
+}
+.x_replaced_domain{
+    padding: 12px 20px;
+    background: #ff698d;
+    color: white;
+    border-radius: 5px;
+    border: 1px solid rgb(190, 190, 190);
+}
+.x_single_blog_flex_content{
+    width: calc(100% - 50px);
+}
+.x_single_blog_flex_content h3{
+    font-size: 1.15rem;
+    font-weight: bold;
+    line-height: 1.15rem;
+    margin-bottom: .35rem;
+    color: #333;
+    max-width: 200px;
+}
+.x_single_blog_flex_content p{
+    font-size: 14px;
+    line-height: 1rem;
+    margin-bottom: 0.35rem;
+    margin-top: 0;
+}
+.x_annoucement h3{
+    font-size: 22px;
+}
+.x_annoucement{
+    font-size: 14px;
+    background: whitesmoke;
+    padding: 15px;
+}
+.x_payment_button{
+    width: 100%;
+}
+.x_billing_detail_form{
+    margin: 0px !important;
+    margin-bottom: 15px !important;
+}
+@media (max-width: 768px){
+    .x_account_nav{
+        position: fixed;
+        z-index: 9999;
+        width: auto;
+        top: 5%;
+        left: 10px;
+        border-radius: 10px;
+        height: 90%;
+        background: #f7f7fa;
+        box-shadow: 0px 0px 10px -3px;
+        padding: 15px;
+        color: var(--rs-sidenav-default-hover-text);
+    }
+    .x_overlay{
+        height: 100%;
+        position: fixed;
+        z-index: 999;
+        background: rgb(0 0 0 / 55%);
+        backdrop-filter: blur(10px);
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+    .x_nav_mobile_close_button{
+        display: block !important;
+        background: unset;
+        font-weight: bold;
+        color: black;
+    }
+    .x_mobile_menu_button{
+        display: flex !important;
+        align-items: center;
+        column-gap: 10px;
+        color: white;
+        background: rgb(45 136 226 / 75%);
+        backdrop-filter: blur(10px);
+        justify-items: center;
+        font-weight: bold;
+        justify-content: center;
+        margin-bottom: 15px;
+        position: fixed;
+        z-index: 99;
+        border-radius: 35px;
+        bottom: 0px;
+        max-width: 180px;
+        left: calc(50% - 90px);
+    }
+    
+}
+.x_mobile_menu_button,
+.x_nav_mobile_close_button{
+    display: none;
+}
