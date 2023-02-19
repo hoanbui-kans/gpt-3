@@ -1,6 +1,6 @@
 import nc from 'next-connect';
 import { ErrorAsync } from '../../../services/ErrorAsync';
-import HandlerSocialLogin from '../auth/handlesocialLogin';
+import HandlerSocialLogin from '../HandleSocialLogin';
 
 const Handler = nc(ErrorAsync);
 
