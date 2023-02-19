@@ -38,7 +38,7 @@
   --x-transition: all .15s ease-in-out;
 }
 
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,wght@0,400;0,600;0,700;1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 html,
 body {
@@ -46,8 +46,7 @@ body {
   margin: 0;
   background-color: #fafafa;
   color: var(--x-black-color);
-  font-family: 'Nunito Sans', sans-serif;
-
+  font-family: 'Inter', sans-serif;
 }
 
 a {
@@ -61,4 +60,163 @@ a:hover {
 
 * {
   box-sizing: border-box;
+}
+
+.cs-chat-container {
+  font-size: 1rem !important;
+}
+
+.cs-message-input__content-editor-wrapper {
+  background-color: #ffffff !important;
+  padding: 0.95em 1.25em !important;
+  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+  color: white !important;
+  border: 1px solid var(--x-border-color);
+}
+
+svg.svg-inline--fa.fa-paper-plane.fa-w-16 {
+  width: 27px;
+  color: #333;
+}
+
+.cs-button {
+  line-height: 2.5 !important;
+}
+
+.cs-message-input__content-editor[data-placeholder]:empty:before {
+  font-size: 1rem !important;
+  line-height: 1.25 !important;
+  box-sizing: border-box;
+  color: var(--x-title-color) !important;
+}
+
+.cs-message-input__content-editor, .cs-message-input__content-editor-container {
+  background-color: unset !important;
+}
+
+.cs-message-input__content-editor {
+  font-size: 1rem !important;
+}
+
+.cs-typing-indicator {
+  padding-left: 35px !important;
+}
+
+.cs-message__content {
+  padding: 0.95em 1.25em !important;
+}
+
+.cs-message-list {
+  padding: 10px 35px !important;
+}
+
+.cs-chat-container .cs-message-input {
+  border: unset !important;
+  padding: 0px 35px 20px 15px !important;
+}
+
+.cs-conversation-header {
+  border: unset !important;
+  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px !important;
+  background: #000033 !important;
+}
+
+.cs-typing-indicator__text{
+  color: #000033 !important;
+}
+
+.cs-conversation-header__info {
+  background: unset !important;
+  color: white !important;
+}
+
+.cs-typing-indicator__dot {
+  background-color: #000033 !important;
+}
+
+.cs-chat-container {
+  background: #ebebeb !important;
+  overflow: hidden !important;
+  border-radius: .35rem;
+  overflow: hidden !important;
+}
+
+.cs-message-list {
+  background: #ffffff !important;
+}
+
+.cs-conversation-header__user-name {
+  background: unset !important;
+  color: white !important;
+}
+
+.cs-conversation-header {
+  padding-left: 35px !important;
+}
+
+.cs-message-list__typing-indicator-container {
+  padding-left: 35px !important;
+  opacity: .5;
+}
+
+.cs-message--incoming .cs-message__content {
+  background-color: #ffffff !important;
+  margin: 25px 15px;
+  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+  border: 1px solid var(--x-border-color)
+}
+
+.cs-message--outgoing .cs-message__content {
+  color: rgba(0,0,0,.87) !important;
+  background-color: #ffffff !important;
+  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+  margin: 25px 15px;
+  border: 1px solid var(--x-border-color)
+}
+
+.rs-sidenav-subtle {
+  background-color: transparent;
+  height: 100% !important;
+}
+
+ul.rs-dropdown-menu {
+  min-width: 150px;
+  border-radius: .35rem;
+}
+
+.rs-navbar-item, .rs-navbar-nav>.rs-dropdown .rs-dropdown-toggle {
+  padding: 18px 20px;
+  width: 100%;
+}
+
+.nav-toggle {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  left: 0;
+  border-top: 1px solid var(--x-border-color);
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: white;
+  z-index: 2;
+}
+
+.x_chat_sidenav {
+  margin-top: 20px;
+}
+
+a.rs-sidenav-item.rs-sidenav-item-active {
+  background: #0033cc;
+  color: white !important;
+  border-radius: .35rem;
+}
+
+a.rs-sidenav-item {
+  border-radius: .35rem !important;
+}
+
+a.rs-sidenav-item:hover {
+  background: #0033cc !important;
+  color: white !important;
 }

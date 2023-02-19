@@ -1,6 +1,4 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
-
-import connection from "../../../services/database";
 import { ErrorAsync } from "../../../services/ErrorAsync";
 import JwtMiddleWare from "../jwt";
 import nc from "next-connect";
@@ -22,34 +20,30 @@ const handler = nc(ErrorAsync);
 handler.use(JwtMiddleWare);
 
 handler.post( async (req, res) => {
-        const { message } = req.body; 
+        const { id, conservation,  message } = req.body; 
         if(!req.session){
             return res.status(403).json(responseMessage)
         } else {
            try {
             const api = new ChatGPTAPI({
-                    apiKey: process.env.NEXT_PUBLIC_OPEN_API_KEY
+                apiKey: process.env.NEXT_PUBLIC_OPEN_API_KEY
             })
-
-            const response = await api.sendMessage( message  + ' trả lời bằng tiếng việt', {
+            const response = await api.sendMessage( message, {
                 conversationId: res.conversationId,
-                parentMessageId: res.id,
+                parentMessageId: res.parentMessageId, 
                 onProgress: (partialResponse) => {
-                    console.log(partialResponse.text);
+                    res?.socket?.server?.io?.emit( conservation, {
+                        id: id,
+                        message: partialResponse.text
+                    });
                 }
             });
 
-            return res.status(200).json({
-                message: response.text,
-                conversationId: response.conversationId,
-                parentMessageId: response.parentMessageId
-            });
+            return res.status(200).json(response);
 
            } catch (error) {
-                console.log('error:', error)
                 return res.status(403).json({ 
-                    error: true,
-                    message: error
+                    error: true
                 })
            }
         }

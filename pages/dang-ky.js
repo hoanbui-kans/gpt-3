@@ -9,7 +9,6 @@ import SocialButton from '../components/SocialButton';
 import Image from 'next/image';
 import axios from 'axios';
 import Head from 'next/head';
-import HTMLReactParser from 'html-react-parser';
 
 const Register = () => {
 
@@ -158,19 +157,14 @@ const Register = () => {
               <Row>
                 <Col xs={24}>
                   <div className={styles.x_login + ' ' + styles.x_logged_form}>
-                    <Link legacyBehavior href = '/'>
-                      Trở về trang chủ
-                    </Link>
                     <h1 className={styles.x_account_title}>Xin chào <span style={{color: '#398af3'}}>{userName}</span></h1>
                     <small>({userEmail})</small>
                     <p className={styles.x_greeting}>
                       <small>
-                      Bạn đã đăng nhập vào hệ thống của chúng tôi, hãy bắt đầu tạo website của bạn, nếu bạn không phải <strong>{userName}</strong>, xin vui lòng <a href="#" onClick={() => signOut()}>Đăng xuất</a>
+                        Bạn đã đăng nhập vào hệ thống của chúng tôi, hãy bắt đầu sử dụng dịch vụ.
                       </small>
+                      <Link href="/"><small>Về trang chủ</small></Link>
                     </p>
-                    <Link legacyBehavior href="/quan-ly">
-                      Quản lý tài khoản
-                    </Link>
                     <SocialButton />
                   </div>
                 </Col>
@@ -191,9 +185,6 @@ const Register = () => {
         <Row>
           <Col xs={24}>
               <div className={styles.x_login}>
-                <Link href = '/'>
-                  Trở về trang chủ
-                </Link>
               <h1 className={styles.x_account_title}>Đăng ký tài khoản</h1>
               <Form 
                 fluid

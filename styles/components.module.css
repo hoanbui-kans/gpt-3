@@ -1,5 +1,35 @@
-.side_nav_item{
+.x_brand_tagline {
+    font-size: 10px;
+    line-height: 20px;
+    font-weight: 700;
+}
 
+.x_side_nav_container .x_add_conservation {
+    border: 2px solid var(--x-border-color) !important;
+    color: #333 !important;
+    background-color: #f5f5f5 !important;
+    border-radius: .35rem !important;
+    margin-bottom: 15px !important;
+    line-height: 1.15 !important;
+    display: block;
+}
+
+.x_side_nav_container .x_conservation_item {
+    margin-bottom: 10px !important;
+    border-radius: .35rem !important;
+    line-height: 1.15 !important;
+}
+
+.x_fixed_nav {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    z-index: 99;
+    background-color: rgb(255, 255, 255);
+    height: calc(100% - 20px);
+    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+    border-radius: 0.35rem;
+    padding: 10px;
 }
 
 .x_nav_bar{
@@ -10,10 +40,26 @@
     border-bottom: 1px solid var(--x-gray-color);
     background-color: white;
 }
-.x_side_nav_brand{
+.x_side_nav_brand {
     display: flex;
     justify-content: flex-start;
-    padding: 10px;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 25px;   
+    padding-top: 10px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.x_site_logo {
+    border-bottom: 1px solid var(--x-gray-color);
+    padding-bottom: 12px;
+    margin-bottom: 12px;
+    display: block;
+}
+.x_side_nav_brand a {
+    width: 100%;
+    text-transform: uppercase;
 }
 .x_nav_icon{
     width: 40px;
@@ -87,4 +133,72 @@
 
 .x_chatbot_breadcumb span{
     color: var(--x-text-color) !important;
+}
+
+.x_add_dialouge {
+    max-width: 992px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    padding-top: 55px;
+}
+
+.x_footer_address_list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    display: block;
+}
+.x_contact_list{
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+.x_contact_list strong{
+    font-size: 16px;
+}
+.x_contact_list > div{
+    width: calc(100% - 110px);
+    margin-left: 20px;
+}
+.x_footer_icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    border-radius: .35rem;
+    background: #f9f9f9;
+    border: 2px solid var(--x-border-color);
+}
+
+.x_add_dialouge_button {
+    padding: 20px;
+    border-radius: .35rem;
+    background: #f9f9f9;
+    border: 2px solid var(--x-border-color);
+    max-width: 320px;
+    margin: auto;
+    margin-bottom: 15px;
+    cursor: pointer;
+    transition: var(--x-transition)
+}
+.x_add_dialouge_button:hover{
+    background-color: var(--x-primary-color);
+    color: white
+}
+.x_dialouge_icon {
+    color: #525252;
+    display: block;
+    margin: auto;
+    margin-bottom: 12px;
+}
+
+.x_dialouge_icon_title {
+    text-align: center;
+    margin-bottom: 12px;
 }

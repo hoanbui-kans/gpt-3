@@ -22,9 +22,10 @@ class HandlerSocialLogin {
                 function(err, result) {
                     return (result);
             });
+            console.log('responseToken[0][0]', responseToken[0][0]);
             return responseToken[0][0];
         } catch (error) {
-            console.error(error)
+            return null
         }
     }
 
@@ -41,21 +42,18 @@ class HandlerSocialLogin {
         }
     }
 
-    async createUser () {
+    async createUser (){
         try {
             const newUserQuery = 'INSERT INTO `kanbox_users` ( `username`, `display_name`, `email`, `password`) VALUES ( ?, ?, ?, ? );'
-            const response = await connection.promise().query( newUserQuery,
-                [ this.profile_id, this.fullname, this.user_email, this.password ], 
-                function(err, result) {
-                    console.log(result);
-            });
-
+            const response = await connection.promise().query( newUserQuery, [ this.profile_id, this.fullname, this.user_email, this.password ]);
+            console.log('response', response);
             if(!response[0]) return false;
             const row = response[0];
             const rowId = row.insertId
             return this.getUserById(rowId);
         } catch (error) {
-            return false;
+            console.log(error)
+            return null;
         }
     }
 
@@ -82,10 +80,8 @@ class HandlerSocialLogin {
                     function (err, result) {
                         return result;
                 });
-                console.log('updateUserProfile', updateUserProfile);
                 return updateUserProfile;
             }
-
        } catch (error) {
             console.error(error)
        }
@@ -103,23 +99,19 @@ class HandlerSocialLogin {
         const existedUser = await this.getUser();
         if(existedUser){
             const userId = existedUser.id;
-            /* Update data if existed */
             const UpdateNewFBData = await this.updateUserData(userId);
-            console.log('UpdateNewFBData-1', UpdateNewFBData);
-            /* Response user when logged in */
             if(UpdateNewFBData){
               return existedUser
             } else {
                 return false;
             }
-            
         } else {
-            /* Create new user */
             const createNewUser = await this.createUser();
+            
+            console.log('existedUser', createNewUser);
+
             const userId = createNewUser.id;
-            /* Update data if existed */
             const UpdateNewFBData = await this.updateUserData(userId);
-            console.log('UpdateNewFBData-2', UpdateNewFBData);
             if (createNewUser && UpdateNewFBData) {
               return createNewUser
             } else {

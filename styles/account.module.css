@@ -348,10 +348,11 @@
     display: block;
     position: relative;
     z-index: 2;
-    max-width: 680px;
+    max-width: 560px;
     margin: auto;
-    background-color: white;
-    border-bottom: 2px solid #d5d5d5;
+    background-color: rgb(255 255 255 / 75%);
+    backdrop-filter: blur(10px);
+    border-radius: 0.35rem;
 }
 .x_login_form{
     margin: 35px auto;

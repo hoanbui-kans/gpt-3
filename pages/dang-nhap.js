@@ -2,12 +2,12 @@ import { useRef, useState } from 'react'
 import { 
   Container, Row, Col, 
   Form,InputGroup, Button, 
-  Schema, Loader, Toggle, Message, 
+  Schema, Loader, Message, 
   useToaster 
 } from 'rsuite'
 import Link from 'next/link'
 import styles from '../styles/account.module.css';
-import { IoHomeOutline, IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useOneTapSignin } from '../components/useOneTapSignin';
 import SocialButton from '../components/SocialButton';
@@ -26,13 +26,11 @@ const Component = () => {
 
 const Login = () => {
   const toaster = useToaster();
+
   const { data: session } = useSession();
+
   const [visible, setVisible] = useState(false);
-  const { status } = useSession();
-  const isSignedIn = status === 'authenticated';
-  const { parentContainerId } =  {};
-  const [isLoading, setIsLoading] = useState(false);
-  
+
   const handleChange = () => {
     setVisible(!visible);
   };
@@ -60,9 +58,8 @@ const Login = () => {
       redirect: false,
       username: formValues.username,
       password: formValues.password,
-      // callbackUrl: '' // `${window.location.origin}`,
     }).catch((error) => {
-      console.log(error)
+      return null
     })
 
     setLoading(false);
@@ -76,8 +73,6 @@ const Login = () => {
   }
 
  if (session) {
-    const userName = session.user.username;
-    const userEmail = session.user.email;
     return (
       <>
         <Script
@@ -93,19 +88,13 @@ const Login = () => {
             <Row>
               <Col xs={24}>
                 <div className={styles.x_login + ' ' + styles.x_logged_form}>
-                  <Link href = '/'>
-                      Trở về trang chủ
-                  </Link>
-                  <h1 className={styles.x_account_title}>Xin chào <span style={{color: '#398af3'}}>{userName}</span></h1>
-                  <small>({userEmail})</small>
+                  <h1 className={styles.x_account_title}>Xin chào</h1>
                   <p className={styles.x_greeting}>
                     <small>
-                      Bạn đã đăng nhập vào hệ thống của chúng tôi, hãy bắt đầu tạo website của bạn, nếu bạn không phải <strong>{userName}</strong>, xin vui lòng <a href="#" onClick={() => signOut()}>Đăng xuất</a>
+                      Bạn đã đăng nhập vào hệ thống của chúng tôi, hãy bắt đầu sử dụng dịch vụ.
                     </small>
+                    <Link href="/"><small>Về trang chủ</small></Link>
                   </p>
-                  <Link href="/quan-ly">
-                      Quản lý tài khoản
-                  </Link>
                   <SocialButton />
                 </div>
               </Col>
@@ -126,9 +115,6 @@ const Login = () => {
         <Row>
           <Col xs={24}>
             <div className={styles.x_login}>
-              <Link href = '/'>
-                Trở về trang chủ
-              </Link>
               <h1  className={styles.x_account_title}>Đăng nhập</h1>
               <Form 
                 fluid
@@ -157,9 +143,6 @@ const Login = () => {
                   </div>
                 </Form.Group>
                 <Form.Group>
-                  <div className={styles.x_toggle_button}>
-                    <Toggle size="sm" /><span>Đăng nhập tự động</span>
-                  </div>
                   <small className={styles.x_account_navigate}>Bạn chưa có tài khoản? xin vui lòng <Link href="/dang-ky">đăng ký</Link></small>
                 </Form.Group>
                 <Form.Group>

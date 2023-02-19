@@ -99,10 +99,9 @@ const options = {
           throw new Error('Cannot extract payload from signin token');
         }
 
-        // Check out the jwt https://next-auth.js.org/configuration/callbacks#jwt-callback
-        // and session https://next-auth.js.org/configuration/callbacks#session-callback callbacks
-        // to see how to store the user in the session.
-        // We return the retrieved user
+        
+        console.log('payload: ', payload);
+
         const {
           email,
           sub,
@@ -114,13 +113,13 @@ const options = {
         } = payload;
 
         let dataOnetap = {     
-          'profile_id' : sub,
-          'user_email' : email,
-          'fullname': name,
-          'first_name' : given_name,
-          'last_name' : family_name,
-          'picture' : picture,
-          'provider' : 'google',
+          profile_id : sub,
+          user_email : email,
+          fullname: name,
+          first_name : given_name,
+          last_name : family_name,
+          picture : picture,
+          provider : 'google',
         };
        
         try {
@@ -146,7 +145,7 @@ const options = {
       switch(provider){
         case 'google':
           socialData = {     
-            'profile_id' : profile.id,
+            'profile_id' : profile.sub,
             'user_email' : user.user_email,
             'fullname': profile.name,
             'first_name' : profile.given_name,
@@ -156,6 +155,7 @@ const options = {
           };
 
           try {
+
             const HanderLoginGoogle =  new HandlerSocialLogin(socialData);
             const responseUserGoogle = await HanderLoginGoogle.socialLogin();
   
@@ -179,12 +179,12 @@ const options = {
               'picture' : profile.picture.data.url,
               'access_token': account.access_token,
               'provider' : provider,
-            };
+           };
 
            try {
             const HanderLoginFB =  new HandlerSocialLogin(socialData);
             const responseUserFB = await HanderLoginFB.socialLogin();
-            
+            console.log(responseUserFB);
             if(responseUserFB){
                 user.token = { ...responseUserFB };
                 return user;
@@ -212,16 +212,15 @@ const options = {
       return baseUrl;
     },
 
-    async jwt({ token, account, user }) {
+    async jwt({ token, user }) {
       if (user){
-        const JWTtoken = jwt.sign( {...user.token} , process.env.SECRET, { algorithm: 'HS256'});
-        token = { ...user.token, token: JWTtoken};
+        const JWTtoken = jwt.sign( user.token , process.env.SECRET, { algorithm: 'HS256'});
+        token = { token: JWTtoken };
       }
       return token;
     },
 
-    async session({session, token, account}){
-      session.user = token;
+    async session({session, token}){
       if(token){
         session.token = token.token;
       }

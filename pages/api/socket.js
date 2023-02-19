@@ -1,42 +1,31 @@
-import { Server } from "socket.io";
+import { Server } from 'socket.io'
+import { ErrorAsync } from "../../services/ErrorAsync";
+import { createServer } from "http";
 import nc from "next-connect";
-import { Socket } from "socket.io-client";
-import http from "http";
 
 export const config = {
-  api: {
-    bodyParser: true,
-  },
+    api: {
+      bodyParser: true,
+    },
 }
 
+const handler = nc(ErrorAsync);
+
 const ioHandler = (req, res) => {
-  
-  const httpServer = http.createServer();
+  const httpServer = createServer();
+  if (!res.socket.server.io) {
+    const io = new Server(res.socket.server);
+    io.on('connection', socket => {
+      socket.broadcast.emit('a user connected')
+    })
+    res.socket.server.io = io
+  } else {
+    console.log('socket.io already running')
+  }
+  res.end()
+}
 
-  const io = new Server(httpServer, {
-    cors: {
-      origin: "*",
-    },
-  });
+handler.post(ioHandler);
+handler.get(ioHandler);
 
-  res.socket.server.io = io;
-
-  io.on("connection", (socket) => {
-    socket.on("connect", (data) => {
-      io.emit("connect", data);
-    });
-
-    socket.on("message", (data) => {
-      console.log("message received:", data);
-      io.emit("message", data);
-    });
-
-    socket.on("disconnect", () => {
-      console.log("user disconnected");
-    });
-  });
-
-  res.end();
-};
-
-export default nc().get(ioHandler).post(ioHandler);
+export default handler
