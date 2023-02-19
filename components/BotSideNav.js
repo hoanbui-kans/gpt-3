@@ -21,7 +21,7 @@ const NavToggle = ({ expanded, onChange }) => {
           trigger="click"
           title={<NoticeIcon />}
         >
-          <Nav.Item target="_blank" href="https://kanbox.vn/gioi-thieu/">Giới thiệu</Nav.Item>
+          <Nav.Item noreferrer target="_blank" href="https://kanbox.vn/gioi-thieu/">Giới thiệu</Nav.Item>
           <Nav.Item onClick={() => signOut()}>
                Đăng xuất
           </Nav.Item>
@@ -59,7 +59,7 @@ const BotSideNav = ({ conservations, activeKey, expanded, setExpanded}) => {
                           >
                           <Sidenav.Header>
                               <div className={styles.x_side_nav_brand}>
-                                    <a style={{textAlign: 'center'}} href="https://kanbox.vn" target="_blank">
+                                    <a noreferrer style={{textAlign: 'center'}} href="https://kanbox.vn" target="_blank">
                                         {
                                           ! expanded ? 
                                           <Image src="/logo-icon.svg" alt="" width={34} height={34}/>: 
