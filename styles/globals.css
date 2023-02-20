@@ -122,6 +122,10 @@ svg.svg-inline--fa.fa-paper-plane.fa-w-16 {
   background: #000033 !important;
 }
 
+.cs-message-list .cs-typing-indicator {
+  background: unset !important;
+}
+
 .cs-typing-indicator__text{
   color: #000033 !important;
 }

@@ -20,16 +20,18 @@ const handler = nc(ErrorAsync);
 handler.use(JwtMiddleWare);
 
 handler.post( async (req, res) => {
-        const { id, conservation, message, parentMessageId } = req.body; 
-    
+        const {id, conservation, message, parentMessageId} = req.body; 
+
         if(!req.session){
             return res.status(403).json(responseMessage)
         } else {
            try {
+
             const api = new ChatGPTAPI({
                 apiKey: process.env.NEXT_PUBLIC_OPEN_API_KEY
             })
-            const response = await api.sendMessage( message, {
+
+            const response = await api.sendMessage(message, {
                 conversationId: conservation,
                 parentMessageId: parentMessageId, 
                 onProgress: (partialResponse) => {
@@ -40,8 +42,10 @@ handler.post( async (req, res) => {
                 }
             });
 
-            return res.status(200).json(response);
+            console.log('response', response);
 
+            res?.socket?.server?.io?.emit(`${conservation}-off`, false);
+            return res.status(200).json(response);
            } catch (error) {
                 return res.status(403).json({ 
                     error: true

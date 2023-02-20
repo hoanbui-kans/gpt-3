@@ -39,7 +39,7 @@ const ChatDialouge = ({ conservations, data }) => {
 
     const [conservation, setConservation] = useState(false); 
 
-    const [typingResponse, setTypingResponse] = useState(null);
+    const [typingResponse, setTypingResponse] = useState(false);
     const [typing, setTyping] = useState(false);
 
     useEffect(() =>{
@@ -83,6 +83,10 @@ const ChatDialouge = ({ conservations, data }) => {
           position: "last",
           type: "text"
         })
+      });
+
+      socket.current.on(`${uuid}-off`, () => {
+        setTypingResponse(false);
       });
     }, [])
 
@@ -135,15 +139,18 @@ const ChatDialouge = ({ conservations, data }) => {
         }  
   
         const response = await axios(config).then((res) => res.data).catch((err) => {
-          return null
+          return false
         })
+
+        console.log('response', response);
         
         if(response){
           let newState = chatState;
+
           newState.push({
               id: response.id,
               message: response.text,
-              sender: 'Bot ai',
+              sender: 'Kanbot GPT AI',
               direction: "incoming",
               position: "last",
               type: "text"
@@ -165,7 +172,6 @@ const ChatDialouge = ({ conservations, data }) => {
           });
         }
         
-        setTypingResponse(false);
         setTyping(false);
       } catch (error) {
         return null
@@ -204,10 +210,6 @@ const ChatDialouge = ({ conservations, data }) => {
         return null
       }
   }
-
-  useEffect(() => {
-    console.log('conservation', conservation);
-  }, [conservation])
 
   const hanleChangeInput = (e) => {
     setValue(e);
@@ -281,10 +283,10 @@ const ChatDialouge = ({ conservations, data }) => {
                                         }) : ""
                                   }
                                   { 
-                                    typingResponse && 
-                                      <Message model={typingResponse}>
+                                    typingResponse ? 
+                                      <Message model={ typingResponse }>
                                         <Avatar src={BotAvatar.src} name={"Bot"} size="md" status="available"/>
-                                      </Message>
+                                      </Message> : ""
                                   }
                            </MessageList>
                            <MessageInput 
