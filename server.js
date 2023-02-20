@@ -2,7 +2,7 @@ const app = require("express")();
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 const next = require("next");
-
+const secure = require('express-force-https');
 const dev = process.env.NODE_ENV !== "production";
 const nextApp = next({ dev });
 const nextHandler = nextApp.getRequestHandler();
@@ -13,7 +13,12 @@ io.on("connect", (socket) => {
   socket.broadcast.emit('a user connected');
 });
 
+if(!dev){
+  app.use(secure);
+}
+
 nextApp.prepare().then(() => {
+  
   app.all("*", (req, res) => {
     return nextHandler(req, res);
   });
