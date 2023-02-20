@@ -22,7 +22,6 @@ class HandlerSocialLogin {
                 function(err, result) {
                     return (result);
             });
-            console.log('responseToken[0][0]', responseToken[0][0]);
             return responseToken[0][0];
         } catch (error) {
             return null
@@ -38,7 +37,7 @@ class HandlerSocialLogin {
             });
             return response[0][0];
         } catch (error) {
-            console.error(error.message())
+            return null
         }
     }
 
@@ -52,7 +51,6 @@ class HandlerSocialLogin {
             const rowId = row.insertId
             return this.getUserById(rowId);
         } catch (error) {
-            console.log(error)
             return null;
         }
     }
@@ -83,7 +81,7 @@ class HandlerSocialLogin {
                 return updateUserProfile;
             }
        } catch (error) {
-            console.error(error)
+           return null
        }
     }
 
@@ -103,19 +101,16 @@ class HandlerSocialLogin {
             if(UpdateNewFBData){
               return existedUser
             } else {
-                return false;
+                return null;
             }
         } else {
             const createNewUser = await this.createUser();
-            
-            console.log('existedUser', createNewUser);
-
             const userId = createNewUser.id;
             const UpdateNewFBData = await this.updateUserData(userId);
             if (createNewUser && UpdateNewFBData) {
               return createNewUser
             } else {
-              return false;
+              return null;
             }
         }
     }

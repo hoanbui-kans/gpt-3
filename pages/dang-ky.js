@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from 'react'
-import { Container, Row, Col, Form, Button, Schema, Loader, Input , InputGroup, useToaster, Message, Toggle  } from 'rsuite'
-import { IoHomeOutline, IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
-import { useSession, signIn, signOut } from "next-auth/react"
+import { useRef, useState } from 'react'
+import { Container, Row, Col, Form, Button, Schema, Loader, Input , InputGroup, useToaster, Message, Toggle, Divider   } from 'rsuite'
+import { IoEyeOutline, IoEyeOffOutline, IoHomeOutline } from "react-icons/io5";
+import { useSession, signIn } from "next-auth/react"
 import { useRouter } from 'next/router';
 import Link from 'next/link'
 import styles from '../styles/account.module.css';
 import SocialButton from '../components/SocialButton';
 import Image from 'next/image';
 import axios from 'axios';
-import Head from 'next/head';
+import { TypeAnimation } from 'react-type-animation';
 
 const Register = () => {
 
@@ -19,15 +19,13 @@ const Register = () => {
 
   const toaster = useToaster();
 
-  const [visible, setVisible] = useState(false);
-  const handleChange = () => {
-    setVisible(!visible);
-  };
+
 
   const { data: session } = useSession();
-
   const formRef = useRef();
+  const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
   const [formValues, setFormValues] = useState({
     username: '',
@@ -36,12 +34,16 @@ const Register = () => {
     repassword: '',
     autologin: false,
   }) 
+
+  const handleChange = () => {
+    setVisible(!visible);
+  };
   
   const model = Schema.Model({
     username: StringType().isRequired('Bạn chưa nhập tên tài khoản.'),
-    email: StringType().isEmail('Email nhập vào chưa chính xác.'),
-    password: StringType().isRequired('Bạn chưa nhập mật khẩu.'),
-    repassword: StringType().addRule((value, data) =>{
+    email: StringType().isEmail('Địa chỉ Email chưa chính xác.'),
+    password: StringType().minLength(8, 'Mật khẩu tối thiểu 8 ký tự').isRequired('Bạn chưa nhập mật khẩu.'),
+    repassword: StringType().minLength(8, 'Mật khẩu tối thiểu 8 ký tự').addRule((value, data) =>{
       if (value !== data.password) {
         return false;
       }
@@ -89,20 +91,18 @@ const Register = () => {
     data.append('repassword', formValues.repassword);
 
       var config = {
-        method: 'post',
-        url: rootURL + '/api/user/register',
+        method: 'POST',
+        url: `${rootURL}/api/user/register`,
         data : data,
         headers: { 
           'Content-Type': 'application/json'
         },
       };
 
-      console.log(rootURL + 'api/user/register');
-
       const Register = await axios(config).then((res) => {
           return res.data;
       }).catch(function (error) {
-        console.log(error);
+          return null
       });
 
       setLoading(false);
@@ -134,7 +134,7 @@ const Register = () => {
       } else {
         toaster.push(
             <Message showIcon type="error">
-              {Register ? Register.message : 'Đã có lỗi không mong muốn xảy ra, xui vui lòng liên hệ kỹ thuật để hỗ trợ!'}
+              { Register ? Register.message : 'Đã có lỗi không mong muốn xảy ra, xui vui lòng liên hệ kỹ thuật để hỗ trợ!' }
             </Message>, 
           { placement: 'topStart' }
         )
@@ -142,30 +142,30 @@ const Register = () => {
     }
 
     if (session) {
-      const userName = session.user.username;
-      const userEmail = session.user.email;
       return (
         <>
-        <Head>
-          
-        </Head>
          <section className={styles.x_account_container}>
             <span className={styles.x_neumorphic}>
-                <Image alt='layout' src={'/layout/decorations-01.svg'} width={800} height={800}/>
+                  <Image alt='layout' src={'/layout/decorations-01.svg'} width={800} height={800}/>
             </span>
             <Container className={styles.x_container}>
               <Row>
                 <Col xs={24}>
                   <div className={styles.x_login + ' ' + styles.x_logged_form}>
-                    <h1 className={styles.x_account_title}>Xin chào <span style={{color: '#398af3'}}>{userName}</span></h1>
-                    <small>({userEmail})</small>
+                    <h1 className={styles.x_account_title}>KANBOX GPT AI GREETING</h1>
                     <p className={styles.x_greeting}>
-                      <small>
-                        Bạn đã đăng nhập vào hệ thống của chúng tôi, hãy bắt đầu sử dụng dịch vụ.
-                      </small>
-                      <Link href="/"><small>Về trang chủ</small></Link>
-                    </p>
-                    <SocialButton />
+                      <TypeAnimation
+                              sequence={[
+                                'Cám ơn bạn đã đăng nhập vào hệ thống của chúng tôi, Kanbox GPT AI sử dụng trí tuệ nhân tạo của Open AI tạo cuộc trò chuyện tìm kiếm những thông tin một cách nhanh chóng và chính xác theo thời gian thực, chúng tôi đang trong quá trình nghiên cứu và hoàn thiện, nếu bạn gặp bất cứ khó khăn nào, hãy liên hệ với kanbox.vn để được hỗ trợ nhanh nhất',
+                                () => { setShowButton(true); }
+                              ]
+                            }
+                              wrapper="div"
+                              cursor={true}
+                              repeat={1}
+                            />
+                      </p>
+                      { showButton && <Link href="/"><Button color="blue" appearance='ghost' block><IoHomeOutline/> Về Trang chủ</Button></Link> }
                   </div>
                 </Col>
               </Row>
@@ -185,7 +185,7 @@ const Register = () => {
         <Row>
           <Col xs={24}>
               <div className={styles.x_login}>
-              <h1 className={styles.x_account_title}>Đăng ký tài khoản</h1>
+              <h1 className={styles.x_account_title}>ĐĂNG KÝ TÀI KHOẢN</h1>
               <Form 
                 fluid
                 className={styles.x_login_form}
@@ -219,13 +219,17 @@ const Register = () => {
                 </Form.Group>
                 <Form.Group>
                   <Form.ControlLabel>Nhập lại mật khẩu</Form.ControlLabel>
-                  <Form.Control 
-                      name='repassword' 
-                      type={visible ? 'text' : 'password'}  
-                      value={EventTarget.value} 
-                      placeholder='Nhập lại mật khẩu'>
-                  </Form.Control>
-                </Form.Group>
+                      <div className={styles.x_password_input_group}>
+                          <Form.Control 
+                                name='repassword' 
+                                type={visible ? 'text' : 'password'}  
+                                value={EventTarget.value} 
+                                placeholder='Nhập lại mật khẩu'/>
+                            <InputGroup.Button onClick={handleChange}>
+                              {visible ? <IoEyeOutline /> : <IoEyeOffOutline />}
+                            </InputGroup.Button>
+                        </div>
+                    </Form.Group>
                 <Form.Group>
                 <div className={styles.x_toggle_button}>
                     <Toggle 
@@ -239,12 +243,10 @@ const Register = () => {
                 </Form.Group>
                 <Form.Group>
                   <Button className={styles.x_login_button} appearance="primary" type="submit">
-                    {
-                      loading ? <span className={styles.x_loading_icon}><Loader /> </span>: ''
-                    }
-                    Đăng ký tài khoản</Button>
+                    { loading ? <span className={styles.x_loading_icon}><Loader /> </span>: '' }
+                    Đăng ký tài khoản
+                  </Button>
                 </Form.Group>
-                
               </Form>
               <SocialButton />
             </div>

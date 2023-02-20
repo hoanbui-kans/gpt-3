@@ -107,12 +107,13 @@ svg.svg-inline--fa.fa-paper-plane.fa-w-16 {
 }
 
 .cs-message-list {
-  padding: 10px 35px !important;
+  padding: 10px 0px !important;
+  background: #efefef !important;
 }
 
 .cs-chat-container .cs-message-input {
   border: unset !important;
-  padding: 0px 35px 20px 15px !important;
+  padding: 25px 35px 20px 15px !important;
 }
 
 .cs-conversation-header {
@@ -141,10 +142,6 @@ svg.svg-inline--fa.fa-paper-plane.fa-w-16 {
   overflow: hidden !important;
 }
 
-.cs-message-list {
-  background: #ffffff !important;
-}
-
 .cs-conversation-header__user-name {
   background: unset !important;
   color: white !important;
@@ -161,19 +158,22 @@ svg.svg-inline--fa.fa-paper-plane.fa-w-16 {
 
 .cs-message--incoming .cs-message__content {
   background-color: #ffffff !important;
-  margin: 25px 15px;
-  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
-  border: 1px solid var(--x-border-color)
+  margin: 15px 5px;
+  border: 1px solid var(--x-border-color);
+  border-radius: 0.7em 0em 0.7em 0 !important;
 }
 
 .cs-message--outgoing .cs-message__content {
   color: rgba(0,0,0,.87) !important;
   background-color: #ffffff !important;
-  box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
-  margin: 25px 15px;
-  border: 1px solid var(--x-border-color)
+  margin: 15px 5px;
+  border: 1px solid var(--x-border-color);
+  border-radius: 0.7em 0em 0.7em 0 !important;
 }
 
+.cs-message {
+  align-items: center;
+}
 .rs-sidenav-subtle {
   background-color: transparent;
   height: 100% !important;
@@ -207,7 +207,7 @@ ul.rs-dropdown-menu {
 }
 
 a.rs-sidenav-item.rs-sidenav-item-active {
-  background: #0033cc;
+  background: #0662f7;
   color: white !important;
   border-radius: .35rem;
 }

@@ -3,16 +3,18 @@ import {
   Container, Row, Col, 
   Form,InputGroup, Button, 
   Schema, Loader, Message, 
-  useToaster 
+  useToaster, 
+  Divider
 } from 'rsuite'
 import Link from 'next/link'
 import styles from '../styles/account.module.css';
-import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
+import { IoEyeOutline, IoEyeOffOutline, IoHomeOutline } from "react-icons/io5";
 import { useSession, signIn, signOut } from "next-auth/react"
 import { useOneTapSignin } from '../components/useOneTapSignin';
 import SocialButton from '../components/SocialButton';
 import Image from 'next/image';
 import Script from 'next/script';
+import { TypeAnimation } from 'react-type-animation';
 
 const Component = () => {
   const { isLoading } = useOneTapSignin({
@@ -25,11 +27,11 @@ const Component = () => {
 };
 
 const Login = () => {
+
   const toaster = useToaster();
-
   const { data: session } = useSession();
-
   const [visible, setVisible] = useState(false);
+  const [showButton, setShowButton] = useState(false);
 
   const handleChange = () => {
     setVisible(!visible);
@@ -75,10 +77,6 @@ const Login = () => {
  if (session) {
     return (
       <>
-        <Script
-          src="https://accounts.google.com/gsi/client"
-          strategy="afterInteractive"
-        />
        <section className={styles.x_account_container}>
           <span className={styles.x_neumorphic}>
                 <Image alt='layout' src={'/layout/decorations-01.svg'} width={800} height={800}/>
@@ -88,14 +86,20 @@ const Login = () => {
             <Row>
               <Col xs={24}>
                 <div className={styles.x_login + ' ' + styles.x_logged_form}>
-                  <h1 className={styles.x_account_title}>Xin chào</h1>
+                  <h1 className={styles.x_account_title}>KANBOX GPT AI GREETING</h1>
                   <p className={styles.x_greeting}>
-                    <small>
-                      Bạn đã đăng nhập vào hệ thống của chúng tôi, hãy bắt đầu sử dụng dịch vụ.
-                    </small>
-                    <Link href="/"><small>Về trang chủ</small></Link>
+                      <TypeAnimation
+                          sequence={[
+                            'Cám ơn bạn đã đăng nhập vào hệ thống của chúng tôi, Kanbox GPT AI sử dụng trí tuệ nhân tạo của Open AI tạo cuộc trò chuyện tìm kiếm những thông tin một cách nhanh chóng và chính xác theo thời gian thực, chúng tôi đang trong quá trình nghiên cứu và hoàn thiện, nếu bạn gặp bất cứ khó khăn nào, hãy liên hệ với kanbox.vn để được hỗ trợ nhanh nhất',
+                            () => { setShowButton(true); }
+                          ]
+                        }
+                          wrapper="div"
+                          cursor={true}
+                          repeat={1}
+                        />
                   </p>
-                  <SocialButton />
+                  { showButton && <Link href="/"><Button color="blue" appearance='ghost' block><IoHomeOutline/> Về Trang chủ</Button></Link> }
                 </div>
               </Col>
             </Row>
@@ -115,7 +119,7 @@ const Login = () => {
         <Row>
           <Col xs={24}>
             <div className={styles.x_login}>
-              <h1  className={styles.x_account_title}>Đăng nhập</h1>
+              <h1  className={styles.x_account_title}>ĐĂNG NHẬP</h1>
               <Form 
                 fluid
                 onSubmit={handleSubmit}

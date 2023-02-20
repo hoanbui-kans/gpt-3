@@ -16,12 +16,14 @@ const NavToggle = ({ expanded, onChange }) => {
     <Navbar appearance="subtle" className="nav-toggle">
       <Nav>
         <Nav.Menu
-          noCaret
-          placement="topStart"
-          trigger="click"
-          title={<NoticeIcon />}
-        >
-          <Nav.Item rel="noreferrer" target="_blank" href="https://kanbox.vn/gioi-thieu/">Giới thiệu</Nav.Item>
+            noCaret
+            placement="topStart"
+            trigger="click"
+            title={<NoticeIcon />}
+          >
+          <Nav.Item as="span">
+            <a rel="noreferrer" target="_blank" href="https://kanbox.vn/gioi-thieu/">Giới thiệu</a>
+          </Nav.Item>
           <Nav.Item onClick={() => signOut()}>
                Đăng xuất
           </Nav.Item>
@@ -62,9 +64,9 @@ const BotSideNav = ({ conservations, activeKey, expanded, setExpanded}) => {
                                     <a rel="noreferrer" style={{textAlign: 'center'}} href="https://kanbox.vn" target="_blank">
                                         {
                                           ! expanded ? 
-                                          <Image src="/logo-icon.svg" alt="" width={34} height={34}/>: 
+                                            <Image src="/favicon.png" alt="kanbox.vn" width={34} height={34}/>: 
                                             <span className={styles.x_site_logo}>
-                                              <Image src="/logo.svg" alt="" width={110} height={40}/>
+                                              <Image src="/Logo.png" alt="kanbox.vn" width={120} height={38}/>
                                             </span>
                                         }
                                     </a>
@@ -72,15 +74,15 @@ const BotSideNav = ({ conservations, activeKey, expanded, setExpanded}) => {
                           </Sidenav.Header>
                           <Sidenav.Body>
                             <Nav appearance="subtle"  activeKey={active} onSelect={setActive}>
-                              <Nav.Item className={styles.x_add_conservation} as="span" icon={<PlusIcon />} eventKey={'index'}>
-                                <Link href={`/`}>Tạo hội thoại</Link>
+                              <Nav.Item href={`/`} className={styles.x_add_conservation} as={Link} icon={<PlusIcon />} eventKey={'index'}>
+                                Tạo hội thoại
                               </Nav.Item>
                               {
                                 Array.isArray(conservations) && conservations.length ? 
                                   conservations.map((val) => {
                                     return(
-                                        <Nav.Item className={styles.x_conservation_item} as="span" key={val.id} icon={<MessageIcon />} eventKey={val.uuid}>
-                                          <Link href={`/chat/${val.uuid}`}>{val.title}</Link>
+                                        <Nav.Item href={`/chat/${val.uuid}`} className={styles.x_conservation_item} as={Link} key={val.id} icon={<MessageIcon />} eventKey={val.uuid}>
+                                            {val.title}
                                         </Nav.Item>
                                     )
                                   })

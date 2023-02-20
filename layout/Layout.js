@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Loading from './Loading';
 import { useOneTapSignin } from '../components/useOneTapSignin';
-import { useSession } from "next-auth/react"
+import { useSession } from "next-auth/react";
+
+import Head from 'next/head';
+import NextNProgress from 'nextjs-progressbar';
 import Script from 'next/script'
 
 const Layout = ({ children }) => {
 
   const [loading, setLoading] = useState(false);
-  const [expanded, setExpanded] = useState(true);
 
   const router = useRouter();
 
@@ -16,21 +17,18 @@ const Layout = ({ children }) => {
     router.events.on('routeChangeStart', () => {
       setLoading(true)
     })
-  
     router.events.on('routeChangeComplete', () => {
       setLoading(false)
     })
-    
   }, [])
 
   const { status } = useSession();
   const { data: session } = useSession();
   const isSignedIn = status === 'authenticated';
   const { parentContainerId } =  {};
-  const [isLoading, setIsLoading] = useState(false);
 
   const Component = () => {
-    const { isLoading } = useOneTapSignin({
+    const { loading } = useOneTapSignin({
       redirect: false,
       parentContainerId: 'googleAuthenticator',
     });
@@ -40,21 +38,20 @@ const Layout = ({ children }) => {
   };
 
   useEffect(() => {
-    if (!isLoading && !isSignedIn) {
+    if (!loading && !isSignedIn) {
       const { google } = window;
       if (google) {
         google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_ID,
           callback: async (response) => {
-            setIsLoading(true);
-
+            setLoading(true);
             // Here we call our Provider with the token provided by google
             await signIn('googleonetap', {
               credential: response.credential,
               redirect: true,
               ...opt,
             });
-            setIsLoading(false);
+            setLoading(false);
           },
           prompt_parent_id: parentContainerId,
           style:
@@ -74,20 +71,33 @@ const Layout = ({ children }) => {
         });
       }
     }
-  }, [isLoading, isSignedIn, parentContainerId]);
+  }, [loading, isSignedIn, parentContainerId]);
 
   return (
-    <>
-      {
-        loading ? 
-          <Loading /> : 
-          <> 
-            <Component />
-            { children } 
-          </>
-      }
-
-       <Script id="gsi" src="https://accounts.google.com/gsi/client" strategy="afterInteractive"/>
+    <>   
+      <Head>
+        <title>Kanbot AI chat app</title>
+        <meta name="description" content="Chúng tôi cung cấp các sản phẩm mẫu hỗ trợ các nội dung số để bạn có thể đưa thông tin doanh nghiệp và sản phẩm của mình lên mạng Internet một cách nhanh chóng và dễ dàng. Điều này giúp bạn gia tăng hiệu quả hoạt động với chi phí thấp nhất"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="canonical" href="https://kanbox.vn/" />
+        <meta property="og:locale" content="vi_VN"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="Kan solution - Thiết kế website chuyên nghiệp giá rẻ nhất"/>
+        <meta property="og:description" content="Chúng tôi cung cấp các sản phẩm mẫu hỗ trợ các nội dung số để bạn có thể đưa thông tin doanh nghiệp và sản phẩm của mình lên mạng Internet một cách nhanh chóng và dễ dàng. Điều này giúp bạn gia tăng hiệu quả hoạt động với chi phí thấp nhất" />
+        <meta property="og:url" content="https://kanbox.vn/"/>
+        <meta property="og:site_name" content="Kan Solutions"/>
+        <meta property="og:image" content="https://kanbox.vn/wp-content/uploads/2022/03/Content-marketing.jpg"/>
+        <meta property="og:image:width" content="2000"/>
+        <meta property="og:image:height" content="1000"/>
+        <meta property="og:image:type" content="image/jpeg"/>
+      </Head>
+      <main className="site-main">
+        <NextNProgress color="#0468fe" startPosition={0.3} stopDelayMs={200} height={3} showOnShallow={false} />
+        <Component />
+        { children } 
+      </main>
+      <Script id="gsi" src="https://accounts.google.com/gsi/client" strategy="afterInteractive"/>
     </>
   )
 }

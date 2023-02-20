@@ -331,7 +331,7 @@
 
 .x_account_title{
     font-size: 28px;
-    text-align: center;
+    text-align: left;
 }
 
 .x_account_update_title{
@@ -350,17 +350,14 @@
     z-index: 2;
     max-width: 560px;
     margin: auto;
-    background-color: rgb(255 255 255 / 75%);
-    backdrop-filter: blur(10px);
-    border-radius: 0.35rem;
 }
 .x_login_form{
-    margin: 35px auto;
+    margin: 15px auto;
 }
 .x_login_form input{
     padding: 15px 15px;
     margin-top: 5px;
-    border-radius: 35px;
+    border-radius: .35rem;
 }
 .x_logged_form{
     display: block;
@@ -377,18 +374,24 @@
 .x_greeting{
     font-size: 16px;
     margin-bottom: 25px;
+    text-align: left;
 }
 .x_account_container{
     width: 100% !important;
+    min-height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-start;
+    position: relative;
 }
 .x_social_title{
     margin-bottom: 15px;
-    text-align: center;
+    text-align: left;
 }
 .x_login_button{
     padding: 15px;
     width: 100%;
-    border-radius: 35px;
+    border-radius: 0.35rem;
     background: black;
     color: white;
     position: relative;
@@ -513,7 +516,7 @@
     display: flex;
     flex-wrap: wrap;
     column-gap: 10px;
-    justify-content: center;
+    justify-content: flex-start;
 }
 .x_facebook_login{
     padding: .75rem 1.25rem;

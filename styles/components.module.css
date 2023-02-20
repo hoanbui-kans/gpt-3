@@ -5,9 +5,8 @@
 }
 
 .x_side_nav_container .x_add_conservation {
-    border: 2px solid var(--x-border-color) !important;
     color: #333 !important;
-    background-color: #f5f5f5 !important;
+    background: #e9e9e9;
     border-radius: .35rem !important;
     margin-bottom: 15px !important;
     line-height: 1.15 !important;
@@ -173,14 +172,14 @@
     text-align: center;
     border-radius: .35rem;
     background: #f9f9f9;
-    border: 2px solid var(--x-border-color);
+    border: 1px solid var(--x-border-color);
 }
 
 .x_add_dialouge_button {
     padding: 20px;
     border-radius: .35rem;
     background: #f9f9f9;
-    border: 2px solid var(--x-border-color);
+    border: 1px solid var(--x-border-color);
     max-width: 320px;
     margin: auto;
     margin-bottom: 15px;
@@ -194,11 +193,27 @@
 .x_dialouge_icon {
     color: #525252;
     display: block;
-    margin: auto;
     margin-bottom: 12px;
 }
 
 .x_dialouge_icon_title {
-    text-align: center;
     margin-bottom: 12px;
+}
+
+.x_show_panel_button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    display: none;
+}
+
+.x_light_primary{
+    background: #22223d;
+}
+
+@media (max-width: 768px){
+    .x_chatbot_container {
+        padding: 0px !important;
+    }
 }

@@ -50,7 +50,7 @@ handler.post( async (req, res) => {
 
                     if(avaiableUser[0].length > 0){
                         responseMessage.message = 'Tên tài khoản hoặc địa chỉ email đã có người sử dụng';
-                        return res.status(403).json(responseMessage);
+                        return res.status(203).json(responseMessage);
                     } else {
                         /* Save All Data */
                         bcrypt.genSalt(saltRounds, function(err, salt) {

@@ -9,13 +9,11 @@ const Handler = nc(ErrorAsync);
 Handler.use(JwtMiddleWare);
 
 Handler.get( async (req, res) => {
-
   const { uuid } = req.query
-
-  if(!req.session) res.status(400).json(null);
-
+  if(!req.session) {
+    return res.status(400).json(null);
+  }
   const { id } = req.session;
-
   try {
     const conservationQuery = 'SELECT * FROM `kanbox_conservation` WHERE `uuid` = ? AND `user_id` = ?;';
     const conservationResults = await connection.promise().query(conservationQuery, [uuid, id]);
@@ -27,13 +25,12 @@ Handler.get( async (req, res) => {
       if(messageResults){
         conservation.messages = messageResults[0];
       }
-      res.status(200).json(conservation);
+      return res.status(200).json(conservation);
     }
 
-    res.status(200).json(conservationResults);
+    return res.status(200).json(conservationResults);
   } catch (error) {
-    console.log(error);
-    res.status(400).json(null)
+    return res.status(400).json(null)
   }
 });
 

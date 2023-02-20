@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Head from 'next/head'
 import axios from 'axios';
 import io from "socket.io-client";
+import { Button } from 'rsuite';
 import { useSession, getSession } from 'next-auth/react';
 import { useRouter, useParams } from 'next/router'
 import { v4 as uuidv4 } from 'uuid';
@@ -16,6 +17,7 @@ import {
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import styles from '../../styles/components.module.css';
 
+import SiteIcon from '@rsuite/icons/Site';
 import BotAvatar from '../../public/bot-avatar.jpg';
 import UserAvatar from '../../public/user-avatar.jpg';
 
@@ -28,19 +30,35 @@ const ChatDialouge = ({ conservations, data }) => {
     const router = useRouter();
 
     const { uuid } = router.query; 
+
     const [loading, setLoading] = useState(null);
+    const [showPanel, setShowPanel] = useState(true);
+    const [expanded, setExpanded ] = useState(true); 
+    const [value, setValue ] = useState(""); 
+    const [chatState, setChatState] = useState([]);
+    const [conservation, setConservation] = useState(null); 
+    const [typingResponse, setTypingResponse] = useState(null);
+    const [typing, setTyping] = useState(false);
+
+    useEffect(() =>{
+      setLoading(true);
+      setChatState(data.messages);
+    }, [data]);
 
     useEffect(() => {
-      async function initializeSocket () {
-        await fetch('/api/socket');
-      }
 
       socket.current = io();
-      
+
+      async function initializeSocket () {
+        await axios.get(`${ROOT_URL}/api/socket`).then((res) => res.data).catch((err) => {
+          return null
+        });
+      }
+
       initializeSocket();
 
       socket.current.on('connect', () => {
-        console.log('connected')
+        console.log('Kanbox GPT AI connected')
       });
 
       socket.current.on(uuid, (msg) => {
@@ -48,7 +66,7 @@ const ChatDialouge = ({ conservations, data }) => {
         setTypingResponse({
           id: msg.id,
           message: HTMLReactParser(newMessage),
-          sender: 'Kanbot AI',
+          sender: 'Kanbot GPT AI',
           direction: "incoming",
           position: "last",
           type: "text"
@@ -57,7 +75,17 @@ const ChatDialouge = ({ conservations, data }) => {
     }, [])
 
     useEffect(() => {
-      setLoading(true);
+      if(typeof window != 'undefined'){
+          function handleResize() {
+            if( window.innerWidth <= 768 ) {
+              setShowPanel(false);
+            } else {
+              setShowPanel(true);
+            }
+          }
+          handleResize();
+          window.addEventListener('resize', handleResize)
+      }
     }, [])
 
     useEffect(() => {
@@ -69,13 +97,6 @@ const ChatDialouge = ({ conservations, data }) => {
         }
       }
     }, [session])
-
-    const [expanded, setExpanded ] = useState(true); 
-    const [value, setValue ] = useState(""); 
-    const [chatState, setChatState] = useState( data ? data.messages : []);
-    const [conservation, setConservation] = useState(null); 
-    const [typingResponse, setTypingResponse] = useState(null);
-    const [typing, setTyping] = useState(false);
 
     async function HandleSendMessage (message) {
       setTyping(true);
@@ -196,43 +217,47 @@ const ChatDialouge = ({ conservations, data }) => {
       </Head>
 
       <main style={{ height: "100vh", padding: 10}}>
-          <div className={styles.x_fixed_nav}>
-            <BotSideNav activeKey={uuid} conservations={conservations} expanded={expanded} setExpanded={setExpanded}/>
-          </div>
-          <div style={{paddingLeft: expanded ? 300 : 100, height: '100%'}}>
+          {
+            showPanel && 
+            <div className={styles.x_fixed_nav}>
+              <BotSideNav activeKey={uuid} conservations={conservations} expanded={expanded} setExpanded={setExpanded}/>
+            </div>
+          }
+          <div className={styles.x_chatbot_container} style={{paddingLeft: showPanel ? expanded ? 300 : 100 : 0, height: '100%'}}>
                   {
                     !loading ? 
                     <Loading /> : 
                     <ChatContainer>
                           <ConversationHeader>
-                              <ConversationHeader.Content userName={'Kanbot AI'} info="Version 1.0.3" />   
+                              <ConversationHeader.Content userName={'Kanbot GPT AI'} info="Version 1.0.3" />   
                               <ConversationHeader.Actions>
+                                  <Button onClick={() => setShowPanel(!showPanel)} color="blue" className={styles.x_light_primary} appearance="primary"><SiteIcon width={20} height={20}/> Menu</Button>
                               </ConversationHeader.Actions>          
                           </ConversationHeader> 
-                            <MessageList typingIndicator={ typing ? <TypingIndicator content={`Kanbot AI đang nhập`} /> : ""}>
+                            <MessageList typingIndicator={ typing ? <TypingIndicator content={`Kanbot GPT AI đang nhập`} /> : ""}>
                                 {
-                                  chatState.length ? chatState.map((val) => {
-                                          if(val.message != ''){
-                                            console.log(val);
-                                            return(
-                                                <Message key={val.id} model={val}>
-                                                    { 
-                                                      val.direction == 'incoming' ?
-                                                        <Avatar src={BotAvatar.src} name={"Bot"} size="md" />
-                                                      : <Avatar src={UserAvatar.src} name={"You"} size="md" />
-                                                    }
-                                                </Message>
-                                            )
-                                          }
-                                      }) : ""
-                                }
-                                { 
-                                  typingResponse && 
-                                    <Message model={typingResponse}>
-                                      <Avatar src={BotAvatar.src} name={"Bot"} size="md" />
-                                    </Message>
-                                }
-                            </MessageList>
+                                  Array.isArray(chatState) && chatState.length ? 
+                                  chatState.map((val) => {
+                                            if(val.message != ''){
+                                              return(
+                                                  <Message key={val.id} model={val}>
+                                                      { 
+                                                        val.direction == 'incoming' ?
+                                                          <Avatar src={BotAvatar.src} name={"Bot"} size="md" status="available"/>
+                                                        : <Avatar src={UserAvatar.src} name={"You"} size="md" status="available"/>
+                                                      }
+                                                  </Message>
+                                              )
+                                            }
+                                        }) : ""
+                                  }
+                                  { 
+                                    typingResponse && 
+                                      <Message model={typingResponse}>
+                                        <Avatar src={BotAvatar.src} name={"Bot"} size="md" status="available"/>
+                                      </Message>
+                                  }
+                           </MessageList>
                            <MessageInput 
                               onSend={HandleAddMessage}  
                               placeholder="Nhập nội dung của bạn"
@@ -257,11 +282,12 @@ export default ChatDialouge;
 export async function getServerSideProps (context) {
 
   const session = await getSession(context);
+
   const { uuid } = context.params
   
   if(!session) return {
-    props: {
-      conservations: null
+    redirect: {
+      destination: '/dang-nhap/'
     }
   };
 
@@ -288,7 +314,7 @@ export async function getServerSideProps (context) {
   const conservation = await axios(curentConservation).then((res) => res.data).catch((err) => {
     return null
   });
-
+  
   return {
     props: {
       conservations: AllConservations,
