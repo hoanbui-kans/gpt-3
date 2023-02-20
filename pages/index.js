@@ -1,25 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import { useSession, getSession } from 'next-auth/react';
-import Router, { useRouter } from 'next/router'
+import Router from 'next/router'
 import Loading from '../components/Loading';
 import BotSideNav from '../components/BotSideNav';
-import { Row, Col, Divider, Input, InputGroup, useToaster, Message} from 'rsuite';
+import { Row, Col, Divider, Input, InputGroup, useToaster, Message, Button} from 'rsuite';
 import PlusIcon from '@rsuite/icons/Plus';
 import Image from 'next/image'
 import styles from '../styles/components.module.css';
+import SiteIcon from '@rsuite/icons/Site';
 
 const ROOT_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
 const AddDialouge = ({ conservations }) => {
 
     const { data: session } = useSession()
-    
     const toaster = useToaster();
-    const router = useRouter();
     const [loading, setLoading] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [title, setTitle] = useState(false);
+    const [showPanel, setShowPanel] = useState(true);
 
     useEffect(() => {
       setLoading(true);
@@ -77,13 +77,30 @@ const AddDialouge = ({ conservations }) => {
       addNewConservation(message);
     }
 
+    useEffect(() => {
+      if(typeof window != 'undefined'){
+          function handleResize() {
+            if( window.innerWidth <= 768 ) {
+              setShowPanel(false);
+            } else {
+              setShowPanel(true);
+            }
+          }
+          handleResize();
+          window.addEventListener('resize', handleResize)
+      }
+    }, [])
+
     return (
       <>
         <main style={{ height: "100vh", padding: 10}}>
-            <div className={styles.x_fixed_nav}>
-              <BotSideNav activeKey={'index'} conservations={conservations} expanded={expanded} setExpanded={setExpanded}/>
-            </div>
-            <div style={{paddingLeft: expanded ? 300 : 100, height: '100%'}}>
+              {
+                showPanel && 
+                <div className={styles.x_fixed_nav}>
+                  <BotSideNav activeKey={'index'} conservations={conservations} expanded={expanded} setExpanded={setExpanded}/>
+                </div>
+              }
+            <div className={styles.x_chatbot_container} style={{paddingLeft:  showPanel ?  expanded ? 300 : 100 : 0, height: '100%'}}>
                     {
                       !loading ? 
                       <Loading /> : 
@@ -98,6 +115,7 @@ const AddDialouge = ({ conservations }) => {
                                     </InputGroup.Button>
                                   </InputGroup>
                               </div> 
+                              <Button onClick={() => setShowPanel(!showPanel)} color="blue" className={styles.x_light_primary} style={{margin: '15px 0px'}} appearance="primary"><SiteIcon width={20} height={20}/> Menu</Button>
                               <Divider style={{margin: '55px 0px'}}/> 
                               <Row style={{width: '100%'}} gap={3}>
                                   <Col xs={24} md={24}>
