@@ -41,8 +41,10 @@ const ChatDialouge = ({ conservations, data }) => {
     const [typing, setTyping] = useState(false);
 
     useEffect(() =>{
-      setLoading(true);
-      setChatState(data.messages);
+      if(data){
+        setLoading(true);
+        setChatState(data.messages);
+      }
     }, [data]);
 
     useEffect(() => {
