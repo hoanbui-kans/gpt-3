@@ -213,6 +213,9 @@
 }
 
 @media (max-width: 768px){
+    .cs-message-input {
+        padding: 0px !important;
+    }
     .x_chatbot_container {
         padding: 0px !important;
     }

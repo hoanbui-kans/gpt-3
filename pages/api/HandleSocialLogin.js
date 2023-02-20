@@ -45,7 +45,6 @@ class HandlerSocialLogin {
         try {
             const newUserQuery = 'INSERT INTO `kanbox_users` ( `username`, `display_name`, `email`, `password`) VALUES ( ?, ?, ?, ? );'
             const response = await connection.promise().query( newUserQuery, [ this.profile_id, this.fullname, this.user_email, this.password ]);
-            console.log('response', response);
             if(!response[0]) return false;
             const row = response[0];
             const rowId = row.insertId

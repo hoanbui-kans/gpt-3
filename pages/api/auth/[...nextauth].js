@@ -98,10 +98,7 @@ const options = {
         if (!payload) {
           throw new Error('Cannot extract payload from signin token');
         }
-
         
-        console.log('payload: ', payload);
-
         const {
           email,
           sub,
