@@ -52,7 +52,7 @@ const BotSideNav = ({ conservations, activeKey, expanded, setExpanded}) => {
                     collapsible
                   >
                   <ScrollContainer 
-                    style={{maxHeight: !expanded ? 'calc(100vh - 170px)' : 'calc(100vh - 110px)', marginTop: 55, padding: '35px 0px'}}>
+                    style={{maxHeight: !expanded ? 'calc(100vh - 170px)' : 'calc(100vh - 150px)', marginTop: 55, padding: '35px 0px'}}>
                       <Sidenav 
                           appearance="subtle"
                           color='primary'
