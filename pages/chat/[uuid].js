@@ -37,10 +37,7 @@ const ChatDialouge = ({ conservations, data }) => {
     const [value, setValue ] = useState(""); 
     const [chatState, setChatState] = useState([]);
 
-    const [conservation, setConservation] = useState( {
-        conversationId: "",
-        parentMessageId: ""
-    }); 
+    const [conservation, setConservation] = useState(false); 
 
     const [typingResponse, setTypingResponse] = useState(null);
     const [typing, setTyping] = useState(false);
@@ -51,6 +48,14 @@ const ChatDialouge = ({ conservations, data }) => {
         setChatState(data.messages);
       }
     }, [data]);
+
+    useEffect(() => {
+      setConservation({
+          conversationId: uuid,
+          parentMessageId: chatState.length ? chatState[chatState.length - 1].uuid : null
+      })
+    }, [chatState]);
+
 
     useEffect(() => {
 
@@ -113,12 +118,13 @@ const ChatDialouge = ({ conservations, data }) => {
         const messageId = uuidv4();
 
         let data = {
-          ...conservation,
           id: messageId,
           message: message,
-          conservation: uuid
+          parentMessageId: conservation.parentMessageId,
+          conservation: conservation.conversationId
         }
   
+        console.log('data', data);
         const config = {
           url: `${ROOT_URL}/api/kanbot/response`,
           method: 'POST',
@@ -131,8 +137,6 @@ const ChatDialouge = ({ conservations, data }) => {
         const response = await axios(config).then((res) => res.data).catch((err) => {
           return null
         })
-
-        console.log('response', response);
         
         if(response){
           let newState = chatState;
@@ -149,11 +153,12 @@ const ChatDialouge = ({ conservations, data }) => {
           
           setConservation({
             conversationId: response.conversationId,
-            parentMessageId: response.parentMessageId 
+            parentMessageId: response.id 
           })
   
           await createMessage({
             id: response.id,
+            parentMessageId: response.id,
             message: response.text,
             direction: "incoming",
             type: "text"
@@ -168,18 +173,21 @@ const ChatDialouge = ({ conservations, data }) => {
   }
 
   async function HandleAddMessage(message) {
-      setValue("");
-      const uuid = uuidv4();
-      let newState = chatState;
-      const newMessage = await createMessage({ 
-        id: uuid,
-        message: message,
-        direction: "outgoing",
-        type: "text"
-      }); 
+      try {
+        setValue("");
+        const uuid = uuidv4();
+        let newState = chatState;
 
-      if(newMessage){
-        newState.push({
+        const newMessage = await createMessage({ 
+          id: uuid,
+          parentMessageId: conservation.parentMessageId,
+          message: message,
+          direction: "outgoing",
+          type: "text"
+        }); 
+
+        if(newMessage){
+          newState.push({
             id: uuid,
             message: HTMLReactParser(message),
             sender: "user",
@@ -187,10 +195,19 @@ const ChatDialouge = ({ conservations, data }) => {
             position: "last",
             type: "text"
         });
+
         setChatState(newState);
+
         await HandleSendMessage(message);
+        }
+      } catch (error) {
+        return null
       }
   }
+
+  useEffect(() => {
+    console.log('conservation', conservation);
+  }, [conservation])
 
   const hanleChangeInput = (e) => {
     setValue(e);
