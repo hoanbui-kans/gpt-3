@@ -20,7 +20,9 @@ const handler = nc(ErrorAsync);
 handler.use(JwtMiddleWare);
 
 handler.post( async (req, res) => {
-        const { id, conservation,  message } = req.body; 
+        const { id, conservation, message, conversationId, parentMessageId } = req.body; 
+        
+        console.log(req.body);
         if(!req.session){
             return res.status(403).json(responseMessage)
         } else {
@@ -29,8 +31,8 @@ handler.post( async (req, res) => {
                 apiKey: process.env.NEXT_PUBLIC_OPEN_API_KEY
             })
             const response = await api.sendMessage( message, {
-                conversationId: res.conversationId,
-                parentMessageId: res.parentMessageId, 
+                conversationId: conversationId,
+                parentMessageId: parentMessageId, 
                 onProgress: (partialResponse) => {
                     res?.socket?.server?.io?.emit( conservation, {
                         id: id,

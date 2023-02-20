@@ -36,7 +36,12 @@ const ChatDialouge = ({ conservations, data }) => {
     const [expanded, setExpanded ] = useState(true); 
     const [value, setValue ] = useState(""); 
     const [chatState, setChatState] = useState([]);
-    const [conservation, setConservation] = useState(null); 
+
+    const [conservation, setConservation] = useState( {
+        conversationId: "",
+        parentMessageId: ""
+    }); 
+
     const [typingResponse, setTypingResponse] = useState(null);
     const [typing, setTyping] = useState(false);
 
@@ -100,61 +105,66 @@ const ChatDialouge = ({ conservations, data }) => {
       }
     }, [session])
 
+    
     async function HandleSendMessage (message) {
-      setTyping(true);
-      const messageId = uuidv4();
+      try {
 
-      let data = conservation !== null ? { 
-        ...conservation,
-        id: messageId,
-        message: message,
-        conservation: uuid
-      } : {
-        id: messageId,
-        message: message,
-        conservation: uuid
-      }
+        setTyping(true);
+        const messageId = uuidv4();
 
-      const config = {
-        url: `${ROOT_URL}/api/kanbot/response`,
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${session.data.token}`
-        },
-        data: data
-      }  
+        let data = {
+          ...conservation,
+          id: messageId,
+          message: message,
+          conservation: uuid
+        }
+  
+        const config = {
+          url: `${ROOT_URL}/api/kanbot/response`,
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.data.token}`
+          },
+          data: data
+        }  
+  
+        const response = await axios(config).then((res) => res.data).catch((err) => {
+          return null
+        })
 
-      const response = await axios(config).then((res) => res.data).catch((err) => {
-        return null
-      })
-      
-      if(response){
-        const responseBotMessage = await createMessage({
-          id: response.id,
-          message: response.text,
-          direction: "incoming",
-          type: "text"
-        });
-        if(responseBotMessage){
+        console.log('response', response);
+        
+        if(response){
           let newState = chatState;
           newState.push({
-            id: response.id,
-            message: response.text,
-            sender: 'Bot ai',
-            direction: "incoming",
-            position: "last",
-            type: "text"
+              id: response.id,
+              message: response.text,
+              sender: 'Bot ai',
+              direction: "incoming",
+              position: "last",
+              type: "text"
           });
+  
           setChatState(newState);
+          
           setConservation({
             conversationId: response.conversationId,
             parentMessageId: response.parentMessageId 
           })
+  
+          await createMessage({
+            id: response.id,
+            message: response.text,
+            direction: "incoming",
+            type: "text"
+          });
         }
+        
+        setTypingResponse(false);
+        setTyping(false);
+      } catch (error) {
+        return null
       }
-      
-      setTypingResponse(false);
-      setTyping(false);
   }
 
   async function HandleAddMessage(message) {
