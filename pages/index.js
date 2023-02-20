@@ -101,7 +101,7 @@ const AddDialouge = ({ conservations }) => {
                               <Divider style={{margin: '55px 0px'}}/> 
                               <Row style={{width: '100%'}} gap={3}>
                                   <Col xs={24} md={24}>
-                                      <Image style={{marginBottom: 15}} src="/logo.png" alt="kanbox.vn" width={120} height={38}/>
+                                      <Image style={{marginBottom: 15}} src="/Logo.png" alt="kanbox.vn" width={120} height={38}/>
                                       <h6 className={styles.x_dialouge_icon_title}>VỀ CHÚNG TÔI</h6>
                                       <p>Kan Solution là đơn vị chuyên cung cấp các giải pháp thiết kế, xây dựng website trọn gói - theo yêu cầu của khách hàng.</p>
                                       <ul className={styles.x_footer_address_list}>
