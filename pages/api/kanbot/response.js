@@ -23,7 +23,10 @@ handler.post( async (req, res) => {
         const {id, conservation, message, parentMessageId} = req.body; 
 
         if(!req.session){
-            return res.status(403).json(responseMessage)
+            return res.status(203).json({
+                message: "Phiên đăng nhập của bạn đã hết hạn",
+                error: true
+            })
         } else {
            try {
 
@@ -42,14 +45,14 @@ handler.post( async (req, res) => {
                 }
             });
 
-            console.log('response', response);
-
             res?.socket?.server?.io?.emit(`${conservation}-off`, false);
             return res.status(200).json(response);
            } catch (error) {
-                return res.status(403).json({ 
-                    error: true
-                 })
+                console.log(error);
+                return res.status(203).json({
+                    message: "Lỗi kết nối đến hệ thống",
+                    error: true,
+                })
            }
         }
     }

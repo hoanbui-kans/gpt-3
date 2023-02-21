@@ -16,10 +16,12 @@ import {
 } from '@chatscope/chat-ui-kit-react'
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.min.css";
 import styles from '../../styles/components.module.css';
-
 import SiteIcon from '@rsuite/icons/Site';
 import BotAvatar from '../../public/bot-avatar.jpg';
 import UserAvatar from '../../public/user-avatar.jpg';
+
+import { useToaster } from 'rsuite';
+import Toaster from './Toaster';
 
 const ROOT_URL = process.env.NEXT_PUBLIC_SITE_URL;
 
@@ -30,6 +32,7 @@ const ChatDialouge = ({ conservations, data }) => {
     const router = useRouter();
 
     const { uuid } = router.query; 
+    const toaster = useToaster();
 
     const [loading, setLoading] = useState(null);
     const [showPanel, setShowPanel] = useState(true);
@@ -50,10 +53,12 @@ const ChatDialouge = ({ conservations, data }) => {
     }, [data]);
 
     useEffect(() => {
-      setConservation({
-          conversationId: uuid,
-          parentMessageId: chatState.length ? chatState[chatState.length - 1].uuid : null
-      })
+      if(Array.isArray(chatState) && chatState.length){
+        setConservation({
+            conversationId: uuid,
+            parentMessageId: chatState[chatState.length - 1].uuid
+        })
+      }
     }, [chatState]);
 
 
@@ -117,18 +122,14 @@ const ChatDialouge = ({ conservations, data }) => {
     
     async function HandleSendMessage (message) {
       try {
-
         setTyping(true);
         const messageId = uuidv4();
-
         let data = {
           id: messageId,
           message: message,
           parentMessageId: conservation.parentMessageId,
           conservation: conservation.conversationId
         }
-  
-        console.log('data', data);
         const config = {
           url: `${ROOT_URL}/api/kanbot/response`,
           method: 'POST',
@@ -140,13 +141,22 @@ const ChatDialouge = ({ conservations, data }) => {
   
         const response = await axios(config).then((res) => res.data).catch((err) => {
           return false
-        })
+        });
 
-        console.log('response', response);
+        if(!response){
+          toaster.push(
+            <Toaster type="error" message="Đã có lỗi không mong muốn xảy ra"/>,
+            { placement : 'topStart'}
+          )
+        }
         
-        if(response){
+        if(response.error){
+          toaster.push(
+            <Toaster type="error" message={response.message}/>,
+            { placement : 'topStart'}
+          )
+        } else {
           let newState = chatState;
-
           newState.push({
               id: response.id,
               message: response.text,
@@ -171,6 +181,7 @@ const ChatDialouge = ({ conservations, data }) => {
             type: "text"
           });
         }
+        
         
         setTyping(false);
       } catch (error) {

@@ -99,7 +99,7 @@ const Login = () => {
                           repeat={1}
                         />
                   </p>
-                  { showButton && <Link href="/"><Button color="blue" appearance='ghost' block><IoHomeOutline/> Về Trang chủ</Button></Link> }
+                  <Link href="/"><Button color="blue" appearance='ghost' block><IoHomeOutline/> Về Trang chủ</Button></Link>
                 </div>
               </Col>
             </Row>
