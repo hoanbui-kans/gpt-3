@@ -304,8 +304,6 @@ const ChatDialouge = ({ conservations, data }) => {
                               onSend={HandleAddMessage}  
                               placeholder="Nhập nội dung của bạn"
                               attachButton={false} 
-                              onChange={hanleChangeInput} 
-                              value={value}
                               onPaste={(evt) => {
                                   evt.preventDefault();
                                   setValue(evt.clipboardData.getData("text"));

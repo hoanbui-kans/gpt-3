@@ -109,13 +109,20 @@ const AddDialouge = ({ conservations }) => {
                               <h4 style={{textAlign: 'center', marginBottom: 22}}>KANBOT GPT AI</h4>
                               <div className={styles.x_new_dialouge_form} style={{  marginTop: 32}}>
                                 <InputGroup inside>
-                                    <Input style={{ height: 55, padding: '0px 12px' }} value={title ? title : ""} onChange={(e) => setTitle(e)} placeholder='Nhập tiêu đề hội thoại xong cái bấm vào dấu "+" bên phải'/>
-                                    <InputGroup.Button style={{ height: 55 }} onClick={() => HandleNewExample(title)} loading={isLoading}>
-                                      <PlusIcon />
+                                    <Input style={{ height: 55, padding: '0px 12px' }} value={title ? title : ""} onChange={(e) => setTitle(e)} placeholder='Nhập tiêu đề hội thoại'/>
+                                    <InputGroup.Button style={{ height: 55, background: '#0662f7', color: 'white' }} onClick={() => HandleNewExample(title)} loading={isLoading}>
+                                      <PlusIcon style={{marginRight: 6}}/> Thêm mới
                                     </InputGroup.Button>
                                   </InputGroup>
                               </div> 
-                              <Button onClick={() => setShowPanel(!showPanel)} color="blue" className={styles.x_light_primary} style={{margin: '15px 0px'}} appearance="primary"><SiteIcon width={20} height={20}/> Menu</Button>
+                              <Button 
+                                  onClick={() => setShowPanel(!showPanel)} 
+                                  color="ghost" 
+                                  style={{margin: '15px 0px', position: 'fixed', top: 10, right: 10}} 
+                                  appearance="subtle">
+                                  <SiteIcon style={{ marginRight: 5}} width={20} height={20}/> 
+                                Menu
+                              </Button>
                               <Divider style={{margin: '55px 0px'}}/> 
                               <Row style={{width: '100%'}} gap={3}>
                                   <Col xs={24} md={24}>

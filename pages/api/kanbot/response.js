@@ -21,7 +21,6 @@ handler.use(JwtMiddleWare);
 
 handler.post( async (req, res) => {
         const {id, conservation, message, parentMessageId} = req.body; 
-
         if(!req.session){
             return res.status(203).json({
                 message: "Phiên đăng nhập của bạn đã hết hạn",
@@ -29,11 +28,9 @@ handler.post( async (req, res) => {
             })
         } else {
            try {
-
             const api = new ChatGPTAPI({
-                apiKey: process.env.NEXT_PUBLIC_OPEN_API_KEY
+                apiKey: process.env.NEXT_PUBLIC_OPEN_API_KEY,
             })
-
             const response = await api.sendMessage(message, {
                 conversationId: conservation,
                 parentMessageId: parentMessageId, 
@@ -44,7 +41,6 @@ handler.post( async (req, res) => {
                     });
                 }
             });
-
             res?.socket?.server?.io?.emit(`${conservation}-off`, false);
             return res.status(200).json(response);
            } catch (error) {
