@@ -102,6 +102,7 @@ const Register = () => {
       const Register = await axios(config).then((res) => {
           return res.data;
       }).catch(function (error) {
+          console.log(error);
           return null
       });
 
